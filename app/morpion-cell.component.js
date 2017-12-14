@@ -4,7 +4,7 @@ angular.module('Morpion')
         bindings:{
             'index': '@'
         },
-        controller: function(gameData){
+        controller: function($scope, gameData){
             var ctrl = this;
             ctrl.played = false;
             ctrl.playerClass = '';
@@ -22,6 +22,8 @@ angular.module('Morpion')
             ctrl.reset = () => {
                 ctrl.playerClass = '';
                 ctrl.played = false;
-            }
+            };
+            //Association de la fonction ctrl.reset avec l'évènement 'morpion-start'
+            $scope.$on('morpion-start', ctrl.reset);
     }
 });

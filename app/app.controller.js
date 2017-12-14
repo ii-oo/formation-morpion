@@ -1,14 +1,18 @@
 angular.module('Morpion')
-.controller('MorpionController', function($scope){
+.controller('MorpionController', function($rootScope, $scope, gameData){
    //Est ce qu'on est en train de jouer ?
     this.playing = false;
     this.results = false;
+    this.isDraw = false;
+    this.winner;
     this.start = () => {
         this.playing = true;
+        $rootScope.$broadcast('morpion-start');
     }
     $scope.$on('morpion-stop', () => {
         this.results = true;
         gameData.switchPlayer();
+        this.isDraw = gameData.status.isDraw;
         this.winner = gameData.players[gameData.current];
         this.playing = false;
     });

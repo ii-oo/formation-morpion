@@ -7,7 +7,6 @@ angular.module('Morpion')
                 return c1 ? c1 === c2 && c1 === c3 :false;
             }
             ctrl.checkWin = () => {
-                console.log('CHECK');
                 // Vérification des cases jouées.
                 let result = false;
                 for (let i = 0; i < 9; ++i) {
@@ -35,12 +34,24 @@ angular.module('Morpion')
                     gameData.values[2],
                     gameData.values[4],
                     gameData.values[6]);
-                //ctrl.result = result;
+                
                 //Emission d'un evènement de l'enfant vers le controlleur avec $emit
-                if (result) {
+                //Si le tableau est totalement rempli
+                let isDraw = !result && Object.keys(gameData.values).length === 9;
+                if (result || isDraw) {
+                    gameData.status.isDraw = isDraw;
                     $scope.$emit('morpion-stop'); //(Notation avec tiret pour pouvoir splitter)
                 }
             };
+
+            $scope.$on('morpion-start', () => {
+                gameData.players.reverse();
+                gameData.current = 0;
+                gameData.values = [];
+                gameData.status.isDraw = false;
+                gameData.status.playing = false;
+                gameData.status.winner = '';  
+            });
             }
         }
 });
