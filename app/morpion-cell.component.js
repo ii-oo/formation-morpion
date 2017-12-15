@@ -2,28 +2,28 @@ angular.module('Morpion')
     .component('morpionCell', {
         templateUrl: 'morpion-cell.template.html',
         bindings:{
-            'index': '@'
+            'index': '@', //
+            'currentPlayer': '<', //Données en entrée depuis le parent morpion.component.js
+            'onMove': '&' //Evenement en sortie vers le parent morpion.component.js
         },
-        controller: function($scope, gameData){
-            var ctrl = this;
-            ctrl.played = false;
-            ctrl.playerClass = '';
-            ctrl.play = () => {
-                if(!ctrl.played){
-                    ctrl.played = true;
-                    ctrl.playerClass = gameData.players[gameData.current];
-                    gameData.switchPlayer();
-                    gameData.values[ctrl.index] = ctrl.playerClass;
-                   // console.log('Game data : ' + gameData.current);
-                } else {
-                    console.warn('Impossible de jouer dans cette cellule !!');
-                }               
+        controller: function($scope) {
+			var ctrl = this;
+			ctrl.played = false;
+			ctrl.playerClass = '';
+			ctrl.play = () => {
+				if (!ctrl.played) {
+					ctrl.played = true;
+					ctrl.playerClass = ctrl.currentPlayer;
+					ctrl.onMove({index: ctrl.index});
+				} else {
+					console.warn('Impossible de jouer ici...');
+				}
+			};
+			ctrl.reset = () => {
+				ctrl.playerClass = '';
+				ctrl.played = false;
             };
-            ctrl.reset = () => {
-                ctrl.playerClass = '';
-                ctrl.played = false;
-            };
-            //Association de la fonction ctrl.reset avec l'évènement 'morpion-start'
-            $scope.$on('morpion-start', ctrl.reset);
-    }
-});
+            //Association de la fonction ctrl.reset à l'évènement 'morpion-start'
+			$scope.$on('morpion-start', ctrl.reset);
+		}
+	});

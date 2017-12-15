@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="dist/app.min.css">
     <title>Document</title>
 </head>
-<body ng-app="Morpion" ng-controller="MorpionController as ctrl">
+<body ng-app="Morpion" ng-strict-d ng-controller="MorpionController as ctrl">
     <div class="results" ng-show="ctrl.results">
         <h1 ng-show="!ctrl.isDraw">{{ ctrl.winner }} a gagné la partie</h1>
         <h1 ng-show="ctrl.isDraw">Match nul</h1>
